@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+body { margin: 0; background: #020617; color: #e2e8f0; }
+button, input, select { font: inherit; }
+code { color: #67e8f9; }
+
+@layer components {
+  .element-tile { @apply min-w-0 min-h-[72px] rounded-lg border border-slate-700 bg-slate-900 p-1.5 flex flex-col justify-between hover:border-cyan-400 hover:bg-slate-800 transition; }
+  .periodic-grid { display:grid; grid-template-columns:repeat(18,minmax(0,1fr)); gap:5px; }
+  .periodic-grid .element-tile:nth-child(2) { grid-column:18; }
+  .periodic-grid .element-tile:nth-child(3) { grid-column:1; }
+  .panel { @apply rounded-2xl border border-slate-800 bg-slate-900/70 p-5; }
+  .field { @apply block text-sm text-slate-300; }
+  .field > span { @apply block mb-2 text-xs text-slate-500; }
+  .field-input, .field input, .field select { @apply w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 outline-none focus:border-cyan-400; }
+  .primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-400 text-slate-950 font-semibold px-4 py-2.5 hover:bg-cyan-300 disabled:opacity-50; }
+  .result-card { @apply rounded-2xl border border-cyan-900 bg-cyan-950/30 p-5; }
+  .equation { @apply font-mono text-xl md:text-2xl text-cyan-100 break-words; }
+  .error { @apply rounded-xl border border-red-900 bg-red-950/30 text-red-300 px-4 py-3 text-sm; }
+  .empty { @apply rounded-xl border border-dashed border-slate-700 bg-slate-950/60 text-slate-500 p-6 text-center; }
+  .loading { @apply rounded-xl border border-cyan-900 bg-cyan-950/30 text-cyan-300 p-4; }
+  .info { @apply rounded-xl bg-slate-950 p-3; }
+  .molecule-canvas { @apply mt-4 rounded-xl bg-white min-h-80 grid place-items-center overflow-auto; }
+  .molecule-canvas svg { max-width:100%; height:auto; }
+}
+
+@media (max-width: 900px) {
+  .periodic-grid { grid-template-columns:repeat(9,minmax(0,1fr)); }
+  .periodic-grid .element-tile:nth-child(2), .periodic-grid .element-tile:nth-child(3) { grid-column:auto; }
+}
