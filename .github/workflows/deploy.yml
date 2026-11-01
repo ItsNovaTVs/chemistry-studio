@@ -27,13 +27,13 @@ jobs:
           node-version: lts/*
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Test chemistry utilities
+        run: npm test
 
       - name: Build
         run: npm run build
-
-      - name: Copy RDKit WebAssembly asset
-        run: cp node_modules/@rdkit/rdkit/dist/RDKit_minimal.wasm dist/RDKit_minimal.wasm
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

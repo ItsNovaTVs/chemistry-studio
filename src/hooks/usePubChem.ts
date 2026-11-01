@@ -36,5 +36,23 @@ export function usePubChem() {
     } finally { setLoading(false); }
   }
 
-  return { lookup, smiles, loading, error };
+  async function sdf3d(query: string): Promise<string | null> {
+    setLoading(true); setError(null);
+    try {
+      const encoded = encodeURIComponent(query.trim());
+      const res = await fetch(API + "/compound/name/" + encoded + "/SDF?record_type=3d");
+      if (!res.ok) {
+        if (res.status === 404) throw new Error("PubChem has no 3D conformer for this compound.");
+        throw new Error("PubChem returned " + res.status + ".");
+      }
+      const sdf = await res.text();
+      if (!sdf.includes("V2000") && !sdf.includes("V3000")) throw new Error("PubChem returned no usable 3D structure.");
+      return sdf;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "3D structure lookup failed.");
+      return null;
+    } finally { setLoading(false); }
+  }
+
+  return { lookup, smiles, sdf3d, loading, error };
 }

@@ -7,9 +7,19 @@ export interface ElementData {
   electronegativity_pauling?: number;
   electron_configuration?: string;
   density?: number;
+  density_unit?: string;
   melt?: number;
   boil?: number;
   summary?: string;
+  phase?: string;
+  group?: number;
+  period?: number;
+  block?: string;
+  discovered_by?: string;
+  electron_affinity?: number;
+  ionization_energy?: number;
+  xpos?: number;
+  ypos?: number;
 }
 
 export interface ReactionResult {
@@ -25,4 +35,6 @@ export interface PubChemCompound {
   MolecularWeight?: string;
   IUPACName?: string;
   Title?: string;
+  ConnectivitySMILES?: string;
+  CanonicalSMILES?: string;
 }
