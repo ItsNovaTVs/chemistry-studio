@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { RDKitModule } from "../../types/rdkit";
+import type { RDKitModule } from "@rdkit/rdkit";
 
 export function MoleculeCanvas({rdkit,smiles}:{rdkit:RDKitModule|null,smiles:string}) {
   const [svg,setSvg]=useState("");
