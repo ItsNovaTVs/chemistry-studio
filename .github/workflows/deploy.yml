@@ -32,6 +32,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Copy RDKit WebAssembly asset
+        run: cp node_modules/@rdkit/rdkit/dist/RDKit_minimal.wasm dist/RDKit_minimal.wasm
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
