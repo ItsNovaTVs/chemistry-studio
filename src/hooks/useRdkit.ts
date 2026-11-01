@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import initRDKitModule from "@rdkit/rdkit";
-import type { RDKitModule } from "../types/rdkit";
+import initRDKitModule, { type RDKitModule } from "@rdkit/rdkit";
 
 export function useRdkit() {
   const [rdkit, setRdkit] = useState<RDKitModule | null>(null);
@@ -9,13 +8,30 @@ export function useRdkit() {
 
   useEffect(() => {
     let alive = true;
-    initRDKitModule()
-      .then((module) => { if (alive) setRdkit(module); })
-      .catch((err: unknown) => {
-        if (alive) setError(err instanceof Error ? err.message : "RDKit failed to load.");
+
+    initRDKitModule({
+      locateFile: (file: string) => {
+        if (file.endsWith(".wasm")) {
+          return `${import.meta.env.BASE_URL}RDKit_minimal.wasm`;
+        }
+        return file;
+      }
+    })
+      .then((module) => {
+        if (alive) setRdkit(module);
       })
-      .finally(() => { if (alive) setLoading(false); });
-    return () => { alive = false; };
+      .catch((err: unknown) => {
+        if (alive) {
+          setError(err instanceof Error ? err.message : "RDKit failed to load.");
+        }
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   return { rdkit, loading, error };
