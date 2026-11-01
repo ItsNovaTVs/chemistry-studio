@@ -25,12 +25,14 @@ export function parseFormula(input: string): Formula {
       if (!openStack.length || openStack.pop() !== closes.get(t)) throw new Error(`Unmatched bracket in ${input}`);
       const group = stack.pop()!;
       const n = Number(tokens[i + 1] && /^\d+$/.test(tokens[i + 1]) ? tokens[++i] : 1);
-      for (const [el, count] of Object.entries(group)) stack.at(-1)![el] = (stack.at(-1)![el] ?? 0) + count * n;
+      for (const [el, count] of Object.entries(group)) const parent = stack[stack.length - 1];
+      parent[el] = (parent[el] ?? 0) + count * n;
       continue;
     }
     if (/^[A-Z][a-z]?$/.test(t)) {
       const n = Number(tokens[i + 1] && /^\d+$/.test(tokens[i + 1]) ? tokens[++i] : 1);
-      stack.at(-1)![t] = (stack.at(-1)![t] ?? 0) + n;
+      const current = stack[stack.length - 1];
+      current[t] = (current[t] ?? 0) + n;
     } else if (/^\d+$/.test(t)) throw new Error(`Unexpected number in ${input}`);
   }
   if (openStack.length) throw new Error(`Unclosed bracket in ${input}`);
